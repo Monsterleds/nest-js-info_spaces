@@ -1,8 +1,10 @@
 import { Controller, Post, Body } from '@nestjs/common';
 
+import User from './entities/User';
+
 import { UserService } from './user.service';
 
-interface RequestCreate {
+interface CreateUserDTO {
   email: string;
   password: string;
 }
@@ -10,9 +12,9 @@ interface RequestCreate {
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-
+  
   @Post()
-  createUser(@Body() { email, password }: RequestCreate): RequestCreate {
-    return this.userService.create({ email, password });
+  async createUser(@Body() { email, password }: CreateUserDTO): Promise<string> {
+    return await this.userService.create({ email, password });
   }
 }
