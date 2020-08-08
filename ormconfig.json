@@ -4,5 +4,11 @@
   "port": 5432,
   "username": "postgres",
   "password": "123456",
-  "database": "info_spaces"
+  "database": "info_spaces",
+  "synchronize": true,
+  "entities": ["__dirname/src/user/entities/*.ts"],
+  "migrations": ["__dirname/src/typeorm/migrations/*.ts"],
+  "cli": {
+    "migrationsDir": "__dirname/src/typeorm/migrations"
+  }
 }
