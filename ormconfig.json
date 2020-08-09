@@ -5,10 +5,12 @@
   "username": "postgres",
   "password": "123456",
   "database": "info_spaces",
-  "synchronize": true,
-  "entities": ["__dirname/src/user/entities/*.ts"],
+  "entities": [
+    "__dirname/src/user/entities/*.ts"
+  ],
   "migrations": ["__dirname/src/typeorm/migrations/*.ts"],
   "cli": {
     "migrationsDir": "__dirname/src/typeorm/migrations"
-  }
+  },
+  "synchronize": true
 }
