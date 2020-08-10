@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Injectable, HttpException } from '@nestjs/common';
+
+import UserRepository from './user.repository';
 
 import User from './entities/User';
 
@@ -12,18 +12,22 @@ interface CreateUserDTO {
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User) 
-    private readonly ormRepository: Repository<User>
+    private readonly userRepository: UserRepository
   ) {}
 
-  
-  public async create({ email, password }: CreateUserDTO): Promise<User> {
-    const user = {
-      id: 'dad',
-      email,
-      password
+  public async execute({ email, password }: CreateUserDTO): Promise<User> {
+    if (!email || !password) {
+      throw new HttpException('Email and password is required', 400);
     }
 
-    return user;
+    const user = await this.userRepository.findByEmail(email);
+
+    if (user) {
+      throw new HttpException('Email is already registered', 400);
+    }
+
+    const newUser = await this.userRepository.createUser({ email, password});
+
+    return newUser;
   }
 }
