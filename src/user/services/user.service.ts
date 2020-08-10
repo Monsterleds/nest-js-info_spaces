@@ -1,8 +1,8 @@
 import { Injectable, HttpException } from '@nestjs/common';
 
-import UserRepository from './user.repository';
+import UserRepository from '../user.repository';
 
-import User from './entities/User';
+import User from '../entities/User';
 
 interface CreateUserDTO {
   email: string;
@@ -15,7 +15,7 @@ export class UserService {
     private readonly userRepository: UserRepository
   ) {}
 
-  public async execute({ email, password }: CreateUserDTO): Promise<User> {
+  public async create({ email, password }: CreateUserDTO): Promise<User> {
     if (!email || !password) {
       throw new HttpException('Email and password is required', 400);
     }

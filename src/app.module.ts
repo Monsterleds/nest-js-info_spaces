@@ -7,7 +7,10 @@ import { UserModule } from './user/user.module';
 
 import { AppController } from './app.controller';
 
+import { UserRepositoryProvider } from './user/user.repository';
+
 import { AppService } from './app.service';
+import { SessionService } from './user/services/session.service';
 
 @Module({
   imports: [UserModule, TypeOrmModule.forRoot({
@@ -25,6 +28,6 @@ import { AppService } from './app.service';
     entities: [User]
   })],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [UserRepositoryProvider, AppService, SessionService],
 })
 export class AppModule {}
