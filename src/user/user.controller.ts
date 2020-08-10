@@ -1,11 +1,15 @@
 import { Controller, Post, Body } from '@nestjs/common';
+import { IsEmail, Length } from 'class-validator';
 
 import User from './entities/User';
 
 import { UserService } from './user.service';
 
-interface CreateUserDTO {
+class CreateUserDTO {
+  @IsEmail()
   email: string;
+
+  @Length(6)
   password: string;
 }
 
@@ -15,6 +19,6 @@ export class UserController {
   
   @Post()
   async createUser(@Body() { email, password }: CreateUserDTO): Promise<User> {
-    return await this.userService.create({ email, password });
+    return await this.userService.execute({ email, password });
   }
 }
