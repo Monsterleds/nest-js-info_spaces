@@ -1,5 +1,6 @@
 import { Injectable, HttpException } from '@nestjs/common';
 import { sign } from 'jsonwebtoken';
+import { compare } from 'bcrypt';
 
 import { UserRepository } from '../user.repository';
 
@@ -24,8 +25,8 @@ export class SessionService {
   public async create({ email, password }: CreateSessionDTO): Promise<ResponseCreateSession> {
     const user = await this.userRepository.findByEmail(email);
 
-    if(!user || user.password !== password) {
-      throw new HttpException('Email and password does not match', 400);
+    if(!user || !await compare(password, user.password)) {
+      throw new HttpException('Email or password does not match', 400);
     }
 
     const token = sign({}, '33bee61bdc659fcff21f7a9309f1158a', {
