@@ -1,4 +1,5 @@
 import { Injectable, HttpException } from '@nestjs/common';
+import { hash } from 'bcrypt';
 
 import UserRepository from '../user.repository';
 
@@ -15,7 +16,7 @@ export class UserService {
     private readonly userRepository: UserRepository
   ) {}
 
-  public async create({ email, password }: CreateUserDTO): Promise<User> {
+  public async create({ email, password }: CreateUserDTO): Promise<User> {    
     if (!email || !password) {
       throw new HttpException('Email and password is required', 400);
     }
@@ -26,7 +27,12 @@ export class UserService {
       throw new HttpException('Email is already registered', 400);
     }
 
-    const newUser = await this.userRepository.createUser({ email, password});
+    const passwordHashed = await hash(password, 8);
+
+    const newUser = await this.userRepository.createUser({
+      email,
+      password: passwordHashed
+    });
 
     return newUser;
   }
