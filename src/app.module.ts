@@ -6,6 +6,7 @@ import User from './user/entities/User';
 import { UserModule } from './user/user.module';
 
 import { AppController } from './app.controller';
+import { UserController } from './user/user.controller';
 
 import { UserRepositoryProvider } from './user/user.repository';
 
@@ -27,7 +28,7 @@ import { SessionService } from './user/services/session.service';
     synchronize: true,
     entities: [User]
   })],
-  controllers: [AppController],
+  controllers: [AppController, UserController],
   providers: [UserRepositoryProvider, AppService, SessionService],
 })
 export class AppModule {}
